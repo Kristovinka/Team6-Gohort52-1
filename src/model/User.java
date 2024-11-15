@@ -6,6 +6,7 @@ import java.util.List;
 public class User {
     private String email;
     private String password;
-    //private List<Account> accountList = new List<Account>();
-
+    //id, role
+    //map<Integer, User>
+    //currency repository - map<String, Currency>, map<String, Rate>
 }

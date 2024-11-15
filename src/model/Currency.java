@@ -1,8 +1,7 @@
 package model;
 
-public enum Currency {
-    USD,
-    EUR,
-    PLN,
-    UAH
+public class Currency {
+    String currencyCode;
+    String title;
+    //
 }
