@@ -1,6 +1,9 @@
 package repository;
 
+import model.Transaction;
 import model.User;
+
+import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository{
     @Override
@@ -11,6 +14,16 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public boolean doesEmailExist(String email) {
         return false;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByUser(User user) {
+        return List.of();
     }
 
     @Override

@@ -11,6 +11,21 @@ public class TransactionRepoImpl implements TransactionRepository{
     }
 
     @Override
+    public void withdrawMoney() {
+
+    }
+
+    @Override
+    public void putMoney() {
+
+    }
+
+    @Override
+    public void exchangeMoney() {
+
+    }
+
+    @Override
     public List<Transaction> getTransactionsHistory() {
         return null;
     }
