@@ -8,19 +8,18 @@ import java.util.Map;
 public class User {
     private String email;
     private String password;
-    Map<Integer, User> usersMap;//= new Map<Integer, User>();
+    //Map<Integer, User> usersMap;//= new Map<Integer, User>();
     List<Transaction> userTransactions;
     //currency repository - map<String, Currency>, map<String, Rate>
     private Role role;
 
-
-    private int userId;
+    private int userId=0;
 
     public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.userId = userId;
+        this.userId = userId++;
         userTransactions=new ArrayList<>();
     }
 
@@ -29,7 +28,6 @@ public class User {
         return "User{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", usersMap=" + usersMap +
                 ", role=" + role +
                 ", userId=" + userId +
                 '}';
@@ -49,14 +47,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Map<Integer, User> getUsersMap() {
-        return usersMap;
-    }
-
-    public void setUsersMap(Map<Integer, User> usersMap) {
-        this.usersMap = usersMap;
     }
 
     public Role getRole() {

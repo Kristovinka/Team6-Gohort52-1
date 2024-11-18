@@ -1,20 +1,21 @@
 package repository;
 
+import model.Account;
 import model.Transaction;
+import model.TransactionType;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TransactionRepository {
 
-    void addTransaction();
+    void withdrawMoney(int userId, Account account, double amount);
 
-    void withdrawMoney(); // снять деньги
+    void putMoney(int userId, Account account, double amount); // положить деньги
 
-    void putMoney(); // положить деньги
+    void exchangeMoney(int userId, Account account, double amount); // поменять деньги
 
-    void exchangeMoney(); // поменять деньги
-
-    List<Transaction> getTransactionsHistory();
+    Map<Integer,Transaction> getTransactionsHistory();
 
 
 }
