@@ -1,4 +1,4 @@
-package utils.validator;
+package utils;
 
 public class ValidateApp {
     public static void main(String[] args) {
