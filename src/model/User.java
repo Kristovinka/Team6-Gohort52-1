@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ public class User {
     private String email;
     private String password;
     Map<Integer, User> usersMap;//= new Map<Integer, User>();
+    List<Transaction> userTransactions;
     //currency repository - map<String, Currency>, map<String, Rate>
     private Role role;
 
@@ -19,6 +21,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.userId = userId;
+        userTransactions=new ArrayList<>();
     }
 
     @Override
@@ -71,4 +74,9 @@ public class User {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public List<Transaction> getUserTransactions() {
+        return userTransactions;
+    }
+
 }
