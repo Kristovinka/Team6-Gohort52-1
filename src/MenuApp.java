@@ -1,9 +1,8 @@
 import repository.AccountRepository;
 import repository.UserRepository;
-import view.Menu;
 
 
-    public class MenuApp {
+public class MenuApp {
         public static void main(String[] args) {
             // Создаем репозитории
             UserRepository userRepository = new UserRepository();
