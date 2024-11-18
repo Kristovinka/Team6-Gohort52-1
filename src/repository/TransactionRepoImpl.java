@@ -31,6 +31,10 @@ public class TransactionRepoImpl implements TransactionRepository{
 
     }
 
+    @Override
+    public void checkExchange_Rate() {
+
+    }
 
     @Override
     public Map<Integer,Transaction> getTransactionsHistory() {

@@ -6,47 +6,86 @@ import model.Currency;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AccountRepoImpl implements AccountRepository{
+public class AccountRepoImpl implements AccountRepository {
 
-    private final Map<Integer, List<Account>> accounts; //Integer - user id
-    private final Map<Integer, List<Transaction>> transactions; //id - account id
-    private AtomicInteger accountCount = new AtomicInteger(1);
-    private AtomicInteger usersCount = new AtomicInteger(1);
+    private final Map<Integer, List<Account>> accounts; //user id
+    private final Map<Integer, List<Transaction>> transactions; // account id
+    private final AtomicInteger accountCount = new AtomicInteger(1);
 
     public AccountRepoImpl() {
-        this.accounts = new LinkedHashMap<Integer,  List<Account>>();
-        this.transactions = new LinkedHashMap<Integer, List<Transaction>>();
+        this.accounts = new LinkedHashMap<>();
+        this.transactions = new LinkedHashMap<>();
         Currency currency = new Currency("USD", "Доллар США");
         addAccount(currency);
     }
 
-    private void addAccount(Currency currency, int userId) {
+    private void addAccount(Currency currency) {
 // get list  user
-        accounts.put(userId,new Account((accountCount.getAndIncrement(),200, currency, usersCount.getAndIncrement()));
-        accounts.put(userId,new Account((accountCount.getAndIncrement(),12.5, currency, usersCount.getAndIncrement()));
-        accounts.put(userId,new Account(accountCount.getAndIncrement(), 30, currency, usersCount.getAndIncrement()));
+        int userId = 12838;
+
+        if (!accounts.containsKey(userId)) {
+            accounts.put(userId, new ArrayList<>());
+        }
+
+        accounts.get(userId).add(new Account(accountCount.getAndIncrement(), 200, currency));
+        accounts.get(userId).add(new Account(accountCount.getAndIncrement(), 12.5, currency));
+        accounts.get(userId).add(new Account(accountCount.getAndIncrement(), 30, currency));
+
     }
 
 
     @Override
     public Account addAccount(Currency currency, int userId) {
-        Account account = new Account(accountCount.getAndIncrement(),0,currency, usersCount.getAndIncrement());
-        accounts.put(usersCount.getAndIncrement(),account);
+        Account account = new Account(accountCount.getAndIncrement(), 0, currency);
+
+        if (!accounts.containsKey(userId)) {
+            accounts.put(userId, new ArrayList<>());
+        }
+        accounts.put(userId, List.of(account));
         return account;
     }
 
     @Override
-    public void deleteAccount() {
+    public boolean deleteAccount(Account account) {
+//        accounts.remove(account.getAccountId());
+//        return true;
+        for (Map.Entry<Integer, List<Account>> entry : accounts.entrySet()) {
+            List<Account> userAccounts = entry.getValue();
+            userAccounts.removeIf(a -> a.getAccountId() == account.getAccountId());
+            if (userAccounts.isEmpty()) {
+                accounts.remove(entry.getKey());
+            }
+            return true;
+        }
+        return false;
 
     }
 
     @Override
-    public double getBalance(Currency currency) {
-        return 0;
+    public double getBalance(int userId, String currencyCode) {
+        if (!accounts.containsKey(userId)) {
+            return 0;
+        }
+        List<Account> userAccounts = accounts.get(userId);
+        double balance = 0;
+        for (Account account : userAccounts) {
+            if (account.getCurrency().getCurrencyCode().equals(currencyCode)) {
+                balance += account.getBalance();
+            }
+        }
+        return balance;
     }
 
     @Override
-    public void checkExchange_Rate() {
+    public Account getAccountById(int accountId) {
 
+        for (Map.Entry<Integer, List<Account>> entry : accounts.entrySet()) {
+            for (Account account : entry.getValue()) {
+                if (account.getAccountId() == accountId) {
+                    return account;
+                }
+            }
+        }
+        return null;
     }
 }

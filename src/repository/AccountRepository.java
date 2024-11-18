@@ -8,10 +8,10 @@ public interface AccountRepository {
 
     Account addAccount(Currency currency, int userId);
 
-    void deleteAccount();
+    boolean deleteAccount(Account account);
 
-    double getBalance(Currency currency);
+    double getBalance(int userId, String currencyCode);
 
-    void checkExchange_Rate(); // check курс
+    public Account getAccountById(int id);
 
 }
