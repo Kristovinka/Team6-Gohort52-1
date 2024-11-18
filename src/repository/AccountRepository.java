@@ -6,7 +6,7 @@ import model.Transaction;
 
 public interface AccountRepository {
 
-    Account addAccount(Currency currency, String email, String password);
+    Account addAccount(Currency currency, int userId);
 
     void deleteAccount();
 
