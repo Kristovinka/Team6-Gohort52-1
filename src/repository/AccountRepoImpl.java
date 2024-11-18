@@ -6,7 +6,7 @@ import model.Currency;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AccountRepoImpl implements AccountRepository{
+public class AccountRepoImpl implements AccountRepository {
 
     private final Map<Integer, List<Account>> accounts; //user id
     private final Map<Integer, List<Transaction>> transactions; // account id
@@ -31,16 +31,13 @@ public class AccountRepoImpl implements AccountRepository{
         accounts.get(userId).add(new Account(accountCount.getAndIncrement(), 12.5, currency));
         accounts.get(userId).add(new Account(accountCount.getAndIncrement(), 30, currency));
 
-//        accounts.put(userId,new Account((accountCount.getAndIncrement(),200, currency));
-//        accounts.put(userId,new Account((accountCount.getAndIncrement(),12.5, currency));
-//        accounts.put(userId,new Account(accountCount.getAndIncrement(), 30, currency);
     }
 
 
     @Override
     public Account addAccount(Currency currency, int userId) {
-        Account account = new Account(accountCount.getAndIncrement(),0,currency);
-        accounts.put(userId,List.of(account));
+        Account account = new Account(accountCount.getAndIncrement(), 0, currency);
+        accounts.put(userId, List.of(account));
         return account;
     }
 
@@ -52,7 +49,7 @@ public class AccountRepoImpl implements AccountRepository{
     }
 
     @Override
-    public double getBalance( int userId, String currencyCode) {
+    public double getBalance(int userId, String currencyCode) {
         if (!accounts.containsKey(userId)) {
             return 0;
         }
@@ -66,4 +63,16 @@ public class AccountRepoImpl implements AccountRepository{
         return balance;
     }
 
+    @Override
+    public Account getAccountById(int accountId) {
+
+        for (Map.Entry<Integer, List<Account>> entry : accounts.entrySet()) {
+            for (Account account : entry.getValue()) {
+                if (account.getAccountId() == accountId) {
+                    return account;
+                }
+            }
+        }
+        return null;
+    }
 }

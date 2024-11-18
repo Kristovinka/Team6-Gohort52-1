@@ -12,4 +12,6 @@ public interface AccountRepository {
 
     double getBalance(int userId, String currencyCode);
 
+    public Account getAccountById(int id);
+
 }
