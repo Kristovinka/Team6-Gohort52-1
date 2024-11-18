@@ -3,29 +3,30 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Transaction {
 
     private double exchange_Rate;
     private LocalDateTime time;
 
-    private static int counter = 1;
-    private int transactionId;
+    private final AtomicInteger transactionId = new AtomicInteger(100);
     private User user;
     private double amount; //сколько деняк обмениваем
     TransactionType transactionType;
     private Currency currency;
-    List<Transaction> transactions;
+    Map<Integer,Transaction> transactions;
     //id, user, type of transaction, amount, currency
     //List<Transaction>
 
 
     public Transaction(Currency currency, double exchange_Rate, double amount, TransactionType transactionType) {
         this.exchange_Rate = exchange_Rate;
-        this.transactionId = counter++;
         this.amount = amount;
-        this.transactions=new ArrayList<>();
+        this.transactions=new LinkedHashMap<Integer,Transaction>();
         this.time=LocalDateTime.now();
         this.currency=currency;
     }
@@ -46,11 +47,15 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public List<Transaction> getTransactions() {
+    public Map<Integer, Transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(Map<Integer, Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public AtomicInteger getTransactionId() {
+        return transactionId;
     }
 }

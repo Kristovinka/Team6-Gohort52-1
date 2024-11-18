@@ -8,16 +8,17 @@ import java.util.Objects;
 
 public class Account {
 
-    private final int userId;
+    User user;
+    private int userId;
     private final int accountId;
     private double balance;
     private Currency currency;
 
-    public Account(int accountId, double balance, Currency currency, int userId) {
+    public Account(int accountId, double balance, Currency currency) {
         this.accountId = accountId;
         this.balance = balance;
         this.currency = currency;
-        this.userId = userId;
+        this.userId = user.getUserId();
     }
 
     @Override

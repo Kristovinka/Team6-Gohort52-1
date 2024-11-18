@@ -1,32 +1,31 @@
 package repository;
 
+import model.Account;
 import model.Transaction;
 
-import java.util.List;
+import java.util.Map;
 
 public class TransactionRepoImpl implements TransactionRepository{
+
+
     @Override
-    public void addTransaction() {
+    public void withdrawMoney(int userId, Account account, double amount) {
 
     }
 
     @Override
-    public void withdrawMoney() {
+    public void putMoney(int userId, Account account, double amount) {
 
     }
 
     @Override
-    public void putMoney() {
+    public void exchangeMoney(int userId, Account account, double amount) {
 
     }
 
-    @Override
-    public void exchangeMoney() {
-
-    }
 
     @Override
-    public List<Transaction> getTransactionsHistory() {
+    public Map<Integer,Transaction> getTransactionsHistory() {
         return null;
     }
 }

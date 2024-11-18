@@ -5,6 +5,7 @@ import model.Transaction;
 import model.User;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,7 +16,7 @@ public class UserRepositoryImpl implements UserRepository{
     private AtomicInteger usersCount = new AtomicInteger(1);
 
     public UserRepositoryImpl() {
-        users = new HashMap<Integer, User>();
+        users = new LinkedHashMap<Integer, User>();
         addUsers();
     }
 
