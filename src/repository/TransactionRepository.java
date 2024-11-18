@@ -15,7 +15,8 @@ public interface TransactionRepository {
 
     void exchangeMoney(int userId, Account account, double amount); // поменять деньги
 
-    Map<Integer,Transaction> getTransactionsHistory();
+    void checkExchange_Rate(); // check курс
 
+    Map<Integer,Transaction> getTransactionsHistory();
 
 }
