@@ -37,14 +37,27 @@ public class AccountRepoImpl implements AccountRepository {
     @Override
     public Account addAccount(Currency currency, int userId) {
         Account account = new Account(accountCount.getAndIncrement(), 0, currency);
+
+        if (!accounts.containsKey(userId)) {
+            accounts.put(userId, new ArrayList<>());
+        }
         accounts.put(userId, List.of(account));
         return account;
     }
 
     @Override
     public boolean deleteAccount(Account account) {
-        accounts.remove(account.getAccountId());
-        return true;
+//        accounts.remove(account.getAccountId());
+//        return true;
+        for (Map.Entry<Integer, List<Account>> entry : accounts.entrySet()) {
+            List<Account> userAccounts = entry.getValue();
+            userAccounts.removeIf(a -> a.getAccountId() == account.getAccountId());
+            if (userAccounts.isEmpty()) {
+                accounts.remove(entry.getKey());
+            }
+            return true;
+        }
+        return false;
 
     }
 
