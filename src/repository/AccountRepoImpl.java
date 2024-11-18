@@ -2,6 +2,7 @@ package repository;
 
 import model.Account;
 import model.Currency;
+import model.Transaction;
 
 public class AccountRepoImpl implements AccountRepository{
     @Override
@@ -17,5 +18,10 @@ public class AccountRepoImpl implements AccountRepository{
     @Override
     public double getBalance(Currency currency) {
         return 0;
+    }
+
+    @Override
+    public void checkExchange_Rate() {
+
     }
 }
