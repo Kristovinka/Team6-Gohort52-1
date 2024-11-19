@@ -23,7 +23,7 @@ public class Transaction {
     //List<Transaction>
 
 
-    public Transaction(Currency currency, double exchange_Rate, double amount, TransactionType transactionType) {
+    public Transaction(Currency currency, double exchange_Rate, double amount) {
         this.exchange_Rate = exchange_Rate;
         this.amount = amount;
         //this.transactions=new LinkedHashMap<Integer,Transaction>();

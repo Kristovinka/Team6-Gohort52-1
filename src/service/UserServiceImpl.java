@@ -1,10 +1,9 @@
-package servise;
+package service;
 
 import model.Role;
 import model.Transaction;
 import model.User;
 import repository.UserRepository;
-import service.UserService;
 import utils.EmailValidateException;
 import utils.PasswordValidateException;
 import utils.UserValidator;
