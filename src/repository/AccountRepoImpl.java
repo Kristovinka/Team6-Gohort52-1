@@ -91,4 +91,12 @@ public class AccountRepoImpl implements AccountRepository {
         }
         return null;
     }
+
+    @Override
+    public List <Account> getAccountsByUser_id(int userId) {
+        if (!accounts.containsKey(userId)) {
+            return null;
+        }
+        return accounts.get(userId);
+    }
 }
