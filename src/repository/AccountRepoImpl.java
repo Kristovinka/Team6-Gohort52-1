@@ -9,12 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AccountRepoImpl implements AccountRepository {
 
     private final Map<Integer, List<Account>> accounts; //user id
-    private final Map<Integer, List<Transaction>> transactions; // account id
     private final AtomicInteger accountCount = new AtomicInteger(1);
 
     public AccountRepoImpl() {
         this.accounts = new LinkedHashMap<>();
-        this.transactions = new LinkedHashMap<>();
         Currency currency = new Currency("USD", "Доллар США");
         addAccount(currency);
     }
@@ -35,13 +33,16 @@ public class AccountRepoImpl implements AccountRepository {
 
 
     @Override
-    public Account addAccount(Currency currency, int userId) {
+    public Account addAccount(Currency currency, int userId) { //get by user id, если список счетов пусто - добавляем
         Account account = new Account(accountCount.getAndIncrement(), 0, currency);
 
         if (!accounts.containsKey(userId)) {
-            accounts.put(userId, new ArrayList<>());
+            accounts.put(userId, new ArrayList<>(List.of(account)));
+        } else {
+            List<Account> accounts1 = accounts.get(userId);
+            accounts1.add(account);
+            accounts.put(userId, accounts1);
         }
-        accounts.put(userId, List.of(account));
         return account;
     }
 
@@ -75,6 +76,8 @@ public class AccountRepoImpl implements AccountRepository {
         }
         return balance;
     }
+
+    //get list accounts
 
     @Override
     public Account getAccountById(int accountId) {
