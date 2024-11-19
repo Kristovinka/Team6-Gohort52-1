@@ -1,22 +1,21 @@
 package repository;
 
 import model.Account;
+import model.Currency;
 import model.Transaction;
 import model.TransactionType;
 
-import java.util.Currency;
 import java.util.List;
 import java.util.Map;
 
 public interface TransactionRepository {
 
-    void withdrawMoney(Account account, double amount);
 
-    void putMoney(Account account, double amount); // положить деньги
+    public List<Transaction> getTransactionsByAccount(int accountId);
 
-    void exchangeMoney(Account account, double amount, Currency origin, Currency result); // поменять деньги
+    public List<Transaction> getTransactionsById(int transactionId);
 
-    void checkExchange_Rate(); // check курс
+    public Transaction addTransaction(Currency currency, double exchange_Rate, double amount, int accountId);
 
     Map<Integer,List<Transaction>> getTransactionsHistory();
 
