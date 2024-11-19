@@ -1,6 +1,7 @@
 package service;
 
 import model.Account;
+import model.Role;
 import model.Transaction;
 
 import java.util.Currency;

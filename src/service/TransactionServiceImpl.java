@@ -1,7 +1,9 @@
 package service;
 
 import model.Account;
+import model.Role;
 import model.Transaction;
+import model.User;
 import repository.TransactionRepository;
 
 import java.util.Currency;
@@ -10,7 +12,7 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
-
+    private User user;
 
 
     public TransactionServiceImpl(TransactionRepository transactionRepository) {
@@ -25,11 +27,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void withdrawMoney(Account account, double amount) {
-        if(account.getBalance()<amount) {
+        if(account==null) {
+            System.out.println("Account doesn't exist!");
+        } else if (user==null || user.getRole() ==Role.BLOCKED) {
+            System.out.println("User is blocked or doesn't exist.");
+        }        if(account.getBalance()<amount) {
             System.out.println("The balance is lower than withdrawal amount!");
         } else {
             account.setBalance(account.getBalance()-amount);
-            System.out.println("Please take your money.");
+            System.out.println("Please take your money. Current balance is: " + account.getBalance());
         }
     }
 
