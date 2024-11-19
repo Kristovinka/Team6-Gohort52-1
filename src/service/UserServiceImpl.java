@@ -61,6 +61,8 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         Map<Integer,User> map = userRepository.getAllUsers();
 
+        if(map.isEmpty()) return null;
+
         List<User> allUsers = new ArrayList<>();
         for (Map.Entry<Integer, User> entry : map.entrySet()) {
             User user = entry.getValue();
