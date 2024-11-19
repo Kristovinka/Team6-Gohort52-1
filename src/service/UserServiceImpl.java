@@ -10,8 +10,10 @@ import utils.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-                // Логики работы с пользователем
+// Логики работы с пользователем
 
 public class UserServiceImpl implements UserService {
 
@@ -33,9 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // Создаем нового пользователя
-        User newUser = new User(email, password, role);
-        userRepository.save(newUser);
-        return newUser;
+        return userRepository.addUser(email, password, role);
     }
 
     @Override
@@ -45,17 +45,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Transaction> getUserTransactions(int userId) {
-        User user = userRepository.findById(userId);
-        return user != null ? user.getTransactions() : new ArrayList<>();
+        if (userRepository.getUserById(userId) == null) {
+            throw new IllegalArgumentException("Пользователь с таким id не существует.");
+        }
+        User user = userRepository.getUserById(userId);
+        return user != null ? userRepository.getTransactionsByUser(user) : new ArrayList<>();
     }
 
     @Override
     public void clearAllUsers() {
-        userRepository.deleteAll();
+        userRepository.clearAllUsers();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        Map<Integer,User> map = userRepository.getAllUsers();
+
+        if(map.isEmpty()) return null;
+
+        List<User> allUsers = new ArrayList<>();
+        for (Map.Entry<Integer, User> entry : map.entrySet()) {
+            User user = entry.getValue();
+            allUsers.add(user);
+        }
+        return allUsers;
+
     }
 }

@@ -56,6 +56,17 @@ public class UserRepositoryImpl implements UserRepository{
         return user.getUserTransactions();
     }
 
+
+    @Override
+    public User getUserById(int userID) {
+
+        if (!users.containsKey(userID)) {
+            return null;
+        }
+        return users.get(userID);
+    }
+
+
     @Override
     public void clearAllUsers() {
         users.clear();

@@ -17,6 +17,7 @@ public interface UserRepository {
 
     List<Transaction> getTransactionsByUser(User user); // Метод позволят получать операции пользователя
 
+    public User getUserById(int userID);
 
     void clearAllUsers(); // Метод для удаления всех пользователей из хранилища
 }
