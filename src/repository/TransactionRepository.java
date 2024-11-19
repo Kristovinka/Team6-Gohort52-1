@@ -18,6 +18,6 @@ public interface TransactionRepository {
 
     void checkExchange_Rate(); // check курс
 
-    Map<Integer,Transaction> getTransactionsHistory();
+    Map<Integer,List<Transaction>> getTransactionsHistory();
 
 }

@@ -18,7 +18,7 @@ public class Transaction {
     private double amount; //сколько деняк обмениваем
     TransactionType transactionType;
     private Currency currency;
-    Map<Integer,Transaction> transactions;
+    //Map<Integer,Transaction> transactions;
     //id, user, type of transaction, amount, currency
     //List<Transaction>
 
@@ -26,7 +26,7 @@ public class Transaction {
     public Transaction(Currency currency, double exchange_Rate, double amount, TransactionType transactionType) {
         this.exchange_Rate = exchange_Rate;
         this.amount = amount;
-        this.transactions=new LinkedHashMap<Integer,Transaction>();
+        //this.transactions=new LinkedHashMap<Integer,Transaction>();
         this.time=LocalDateTime.now();
         this.currency=currency;
     }
@@ -45,14 +45,6 @@ public class Transaction {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public Map<Integer, Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(Map<Integer, Transaction> transactions) {
-        this.transactions = transactions;
     }
 
     public AtomicInteger getTransactionId() {
