@@ -63,9 +63,9 @@ public class AccountRepoImpl implements AccountRepository {
     }
 
     @Override
-    public double getBalance(int userId, String currencyCode) {
+    public Double getBalance(int userId, String currencyCode) {
         if (!accounts.containsKey(userId)) {
-            return 0;
+            return null;
         }
         List<Account> userAccounts = accounts.get(userId);
         double balance = 0;
