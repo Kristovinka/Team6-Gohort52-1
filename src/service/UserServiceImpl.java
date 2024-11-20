@@ -1,6 +1,5 @@
 package service;
 
-import model.Role;
 import model.Transaction;
 import model.User;
 import repository.UserRepository;
@@ -12,7 +11,6 @@ import utils.UserValidator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 // Логики работы с пользователем
 
@@ -25,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(String email, String password, Role role) throws EmailValidateException, RegistrationValidateException, PasswordValidateException {
+    public User registerUser(String email, String password) throws EmailValidateException, RegistrationValidateException, PasswordValidateException {
                  // Проверяем валидность email и пароля
         UserValidator.isEmailValid(email);
         UserValidator.isPasswordValid(password);

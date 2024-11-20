@@ -2,20 +2,30 @@ package view;
 
 import model.Account;
 import model.User;
+import service.AccountService;
+import service.TransactionService;
+import service.UserService;
 
 import java.util.Scanner;
 
 public class UserMenu {
+    // discuss
     private AccountService accountService;
+    // discuss
     private CurrencyService currencyService;
-    private OperationService operationService;
+    //TransactionService -
+    private TransactionService transactionService;
     private Scanner scanner;
 
-    public UserMenu(AccountService accountService, CurrencyService currencyService, OperationService operationService) {
+    public UserMenu(AccountService accountService, CurrencyService currencyService, TransactionService transactionService) {
         this.accountService = accountService;
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = transactionService;
         this.scanner = new Scanner(System.in);
+    }
+
+    public UserMenu(AccountService accountService, UserService userService) {
+
     }
 
     public void showMenu(User user) {
@@ -64,9 +74,9 @@ public class UserMenu {
     }
 
     private void viewBalance(User user) {
-        System.out.println("Список аккаунтов пользователя " + user.getName() + ":");
-        for (Account account : user.getAccounts().values()) {
-            System.out.println("ID: " + account.getId() + ", Валюта: " + account.getCurrency() + ", Баланс: " + account.getBalance());
+        System.out.println("Список аккаунтов пользователя " + user.getUserId() + ":");
+        for (Account account : user.getAccountId().values()) {
+            System.out.println("ID: " + account.getUserId() + ", Валюта: " + account.getCurrency() + ", Баланс: " + account.getBalance());
         }
     }
 
@@ -84,6 +94,7 @@ public class UserMenu {
             System.err.println("Ошибка пополнения: " + e.getMessage());
         }
     }
+
 
     private void withdrawAccount(User user) {
         System.out.print("Введите ID аккаунта: ");
@@ -122,7 +133,7 @@ public class UserMenu {
 
     private void viewOperations(User user) {
         System.out.println("История операций пользователя " + user.getName() + ":");
-        for (Operation operation : operationService.getOperationsByUser(user.getId())) {
+        for (Operation operation : transactionService.getOperationsByUser(user.getId())) {
             System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
         }
     }

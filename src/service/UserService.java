@@ -1,10 +1,10 @@
 package service;
 
-import model.Role;
 import model.Transaction;
 import model.User;
 import utils.EmailValidateException;
 import utils.PasswordValidateException;
+import utils.RegistrationValidateException;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ import java.util.List;
 public interface UserService {
 
 
-    User registerUser(String email, String password, Role role) throws EmailValidateException, PasswordValidateException;
+    User registerUser(String email, String password) throws EmailValidateException, PasswordValidateException, RegistrationValidateException;
 
 
     boolean doesEmailExist(String email);
 
 
-    List<Transaction> getUserTransactions(int userId);
+    List<Transaction> getUserTransactions(int userId) throws RegistrationValidateException;
 
 
     void clearAllUsers();

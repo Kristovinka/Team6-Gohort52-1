@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface UserRepository {
 
+    User save(User user);
+
     User addUser(String email, String password, Role role);
 
     boolean doesEmailExist(String email);
@@ -20,4 +22,10 @@ public interface UserRepository {
     public User getUserById(int userID);
 
     void clearAllUsers(); // Метод для удаления всех пользователей из хранилища
+
+    User findById(int userId);
+
+    List<User> findAll();
+
+    void deleteAll();
 }

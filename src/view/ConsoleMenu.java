@@ -1,21 +1,27 @@
 package view;
 
 import model.User;
+import service.AccountService;
+import service.CurrencyService;
+import service.TransactionService;
+import service.UserService;
 
 import java.util.Scanner;
 
 class ConsoleMenu {
     private UserService userService;
+    // discuss
     private AccountService accountService;
+    // discuss
     private CurrencyService currencyService;
-    private OperationService operationService;
+    private TransactionService transactionService;
     private Scanner scanner;
 
-    public ConsoleMenu(UserService userService, AccountService accountService, CurrencyService currencyService, OperationService operationService) {
+    public ConsoleMenu(UserService userService, AccountService accountService, CurrencyService currencyService, TransactionService transactionService) {
         this.userService = userService;
         this.accountService = accountService;
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = transactionService;
         this.scanner = new Scanner(System.in);
     }
 
@@ -57,7 +63,7 @@ class ConsoleMenu {
         String password = scanner.nextLine();
 
         User user = new User();
-        user.setName(name);
+        user.setUserId(name);
         user.setEmail(email);
         user.setPassword(password);
         user.setRole("user"); // По умолчанию новый пользователь - обычный пользователь
@@ -79,7 +85,7 @@ class ConsoleMenu {
         try {
             User user = userService.login(email, password);
             System.out.println("Вход успешен!");
-            UserMenu userMenu = new UserMenu(accountService, currencyService, operationService);
+            UserMenu userMenu = new UserMenu(accountService, currencyService, transactionService);
             userMenu.showMenu(user);
         } catch (CustomException e) {
             System.err.println("Ошибка входа: " + e.getMessage());
@@ -96,7 +102,7 @@ class ConsoleMenu {
             User admin = userService.login(email, password);
             if (userService.isAdmin(admin)) {
                 System.out.println("Вход успешен!");
-                AdministratorMenu adminMenu = new AdministratorMenu(currencyService, operationService, userService);
+                AdministratorMenu adminMenu = new AdministratorMenu(currencyService, transactionService, userService);
                 adminMenu.showMenu(admin);
             } else {
                 System.err.println("Вы не имеете прав администратора.");

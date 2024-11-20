@@ -1,19 +1,25 @@
 package view;
 
+import model.Currency;
+import model.Transaction;
 import model.User;
+import service.CurrencyService;
+import service.TransactionService;
+import service.UserService;
 
 import java.util.Scanner;
 import java.util.List;
 
 public class AdministratorMenu {
+   //  discuss
     private CurrencyService currencyService;
-    private OperationService operationService;
+    private TransactionService transactionService;
     private UserService userService;
     private Scanner scanner;
 
-    public AdministratorMenu(CurrencyService currencyService, OperationService operationService, UserService userService) {
+    public AdministratorMenu(CurrencyService currencyService, TransactionService transactionService, UserService userService) {
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = transactionService;
         this.userService = userService;
         this.scanner = new Scanner(System.in);
     }
@@ -68,12 +74,12 @@ public class AdministratorMenu {
         double rate = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        try {
-            currencyService.updateExchangeRate(fromCurrency, toCurrency, rate);
-            System.out.println("Курс валюты успешно изменен.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка изменения курса: " + e.getMessage());
-        }
+//        try {
+//            currencyService.updateExchangeRate(fromCurrency, toCurrency, rate);
+//            System.out.println("Курс валюты успешно изменен.");
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка изменения курса: " + e.getMessage());
+//        }
     }
 
     private void addCurrency() {
@@ -104,10 +110,10 @@ public class AdministratorMenu {
         String userId = scanner.nextLine();
 
         try {
-            User user = userService.getUserById(userId);
+            User user = userService.getAllUsers(userId);
             System.out.println("История операций пользователя " + user.getName() + ":");
-            for (Operation operation : operationService.getOperationsByUser(userId)) {
-                System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
+            for (Transaction transaction : transactionService.getTransactionById(userId)) {
+                System.out.println("ID: " + transaction.getId() + ", Тип: " + transaction.getType() + ", Сумма: " + transaction.getAmount() + ", Дата: " + transaction.getDate());
             }
         } catch (CustomException e) {
             System.err.println("Ошибка просмотра операций пользователя: " + e.getMessage());

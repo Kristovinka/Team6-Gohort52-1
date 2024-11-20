@@ -69,4 +69,10 @@ public class User {
         return userTransactions;
     }
 
+    public void addTransaction(Transaction transaction1) {
+    }
+
+    public void setUserId(String name) {
+
+    }
 }

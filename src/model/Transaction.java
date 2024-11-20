@@ -31,6 +31,10 @@ public class Transaction {
         this.currency=currency;
     }
 
+    public Transaction(int i, double exchangeRate) {
+
+    }
+
     public double getExchange_Rate() {
         return exchange_Rate;
     }
