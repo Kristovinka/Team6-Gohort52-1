@@ -1,6 +1,9 @@
 package view;
 
 import model.User;
+import service.CurrencyService;
+import service.UserService;
+import utils.RoleValidateException;
 
 import java.util.Scanner;
 
@@ -101,7 +104,7 @@ class ConsoleMenu {
             } else {
                 System.err.println("Вы не имеете прав администратора.");
             }
-        } catch (CustomException e) {
+        } catch (RoleValidateException e) {
             System.err.println("Ошибка входа: " + e.getMessage());
         }
     }

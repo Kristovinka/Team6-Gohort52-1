@@ -8,6 +8,8 @@ public interface CurrencyRepository {
 
     Currency addCurrency(String currencyCode, String title);
 
+    Currency getCurrencyByCode(String code);
+
     List<Currency> getAllCurrencies();
 
     boolean deleteCurrency(Currency currency);

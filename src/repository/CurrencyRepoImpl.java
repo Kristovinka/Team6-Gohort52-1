@@ -32,6 +32,15 @@ public class CurrencyRepoImpl implements CurrencyRepository{
             currencies.add(currency);
             return currency;
     }
+    @Override
+    public Currency getCurrencyByCode(String code){
+        for (Currency currency: currencies) {
+            if (currency.getCurrencyCode().equals(code)) {
+                return currency;
+            } else return null;
+        }
+        return null;
+    }
 
     @Override
     public List<Currency> getAllCurrencies() {
