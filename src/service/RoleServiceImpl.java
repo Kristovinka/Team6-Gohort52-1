@@ -1,40 +1,41 @@
 package service;
 
 import model.Role;
-import repository.RoleRepository;
+import model.User;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-
 public class RoleServiceImpl implements RoleService {
+    // Хранилище ролей
+    private final Map<Integer, Role> roleStorage = new HashMap<>();
 
-    private final RoleRepository roleRepository;
-
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    public RoleServiceImpl(Map<Integer, Role> initialRoles) {
+        if (initialRoles != null) {
+            // Инициализация с заранее заданными ролями
+            this.roleStorage.putAll(initialRoles);
+        }
     }
 
     @Override
-    public Optional<Role> getRoleByName(String name) {
-                // Поиск по имени роли, например, ADMIN или USER
-        return roleRepository.findByName(name.toUpperCase());
+    public void assignRole(int userId, Role role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Role yt vj;tm ,snm null");
+        }
+        // Назначение или обновление роли
+        roleStorage.put(userId, role);
     }
 
     @Override
-    public void saveRole(String name) {
-        // Используем перечисление для создания роли
-        Role role = Role.valueOf(name.toUpperCase());
-        roleRepository.save(role);
+    public Optional<Role> getRole(int userId) {
+        // Получаем роль по ID
+        return Optional.ofNullable(roleStorage.get(userId));
     }
 
     @Override
-    public void deleteRole(int id) {
-        roleRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+    public Map<Integer, Role> getAllRoles() {
+        // Возвращаем копию карты ролей
+        return new HashMap<>(roleStorage);
     }
 }
