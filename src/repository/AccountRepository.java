@@ -19,4 +19,6 @@ public interface AccountRepository {
 
     public List<Account> getAccountsByUser_id(int userId);
 
+    public List<Currency> getCurrenciesByUser(int userId);
+
 }
