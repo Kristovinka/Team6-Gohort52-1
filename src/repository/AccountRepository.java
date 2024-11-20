@@ -10,6 +10,7 @@ public interface AccountRepository {
 
     Account addAccount(Currency currency, int userId);
 
+
     boolean deleteAccount(Account account);
 
     Double getBalance(int userId, String currencyCode);
