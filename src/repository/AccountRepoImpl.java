@@ -99,4 +99,19 @@ public class AccountRepoImpl implements AccountRepository {
         }
         return accounts.get(userId);
     }
+
+    @Override
+    public List<Currency> getCurrenciesByUser(int userId) {
+        if (!accounts.containsKey(userId)) {
+            return null;
+        }
+        List<Account> userAccounts = accounts.get(userId);
+        Set<Currency> currencies = new HashSet<>(); // Используем HashSet для исключения дубликатов
+
+        for (Account account : userAccounts) {
+            currencies.add(account.getCurrency());
+        }
+
+        return new ArrayList<>(currencies); // Преобразуем Set в ArrayList для соответствия ожидаемому типу
+     }
 }

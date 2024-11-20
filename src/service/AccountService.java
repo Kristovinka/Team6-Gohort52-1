@@ -13,7 +13,9 @@ public interface AccountService {
 
     Double getBalance(int userId, String currencyCode);
 
-    public Account getAccountById(int id);
+    List<Currency> getCurrenciesByUser(int userId);
+
+    public Account getAccountById(int idAccount);
 
     public List<Account> getAccountsByUser_id(int userId);
 
