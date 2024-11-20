@@ -8,6 +8,7 @@ import repository.TransactionRepository;
 
 import java.util.Currency;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionServiceImpl implements TransactionService {
 
@@ -41,6 +42,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void putMoney(Account account, double amount) {
+        if(account==null) {
+            System.out.println("Account doesn't exist!");
+        } else if (user==null || user.getRole() ==Role.BLOCKED) {
+            System.out.println("User is blocked or doesn't exist.");
+        } else
         account.setBalance(account.getBalance()+amount);
         System.out.println("Operation successful. Current balance is " + account.getBalance());
     }
@@ -51,21 +57,15 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getAllTransactions() {
-                    // Находим  все транзакции
-        return transactionRepository.findAll();
+    public Map<Integer, List<Transaction>> getAllTransactions() {
+        // Находим  все транзакции
+        return transactionRepository.getTransactionsHistory();
     }
 
     @Override
-    public Transaction getTransactionById(int id) {
-                    // Получение транзакции по ID
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Транзакция с таким ID не найдена: " + id));
+    public List<Transaction> getTransactionsById(int id) {
+        // Получение транзакций по ID
+        return transactionRepository.getTransactionsById(id);
     }
 
-    @Override
-    public void deleteTransactionById(int id) {
-                    // Удаление транзакции по ID
-        transactionRepository.deleteById(id);
-    }
 }
