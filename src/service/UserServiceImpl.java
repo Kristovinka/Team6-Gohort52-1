@@ -6,6 +6,7 @@ import model.User;
 import repository.UserRepository;
 import utils.EmailValidateException;
 import utils.PasswordValidateException;
+import utils.RegistrationValidateException;
 import utils.UserValidator;
 
 import java.util.ArrayList;
@@ -24,14 +25,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(String email, String password, Role role) throws EmailValidateException, PasswordValidateException {
+    public User registerUser(String email, String password, Role role) throws EmailValidateException, RegistrationValidateException, PasswordValidateException {
                  // Проверяем валидность email и пароля
         UserValidator.isEmailValid(email);
         UserValidator.isPasswordValid(password);
 
                 // Проверяем наличие пользователя с таким email
         if (userRepository.doesEmailExist(email)) {
-            throw new IllegalArgumentException("Пользователь с таким email уже существует.");
+            throw new RegistrationValidateException("Пользователь с таким email уже существует.");
         }
 
         // Создаем нового пользователя
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Transaction> getUserTransactions(int userId) {
+    public List<Transaction> getUserTransactions(int userId) throws RegistrationValidateException{
         if (userRepository.getUserById(userId) == null) {
-            throw new IllegalArgumentException("Пользователь с таким id не существует.");
+            throw new RegistrationValidateException("Пользователь с таким id не существует.");
         }
         User user = userRepository.getUserById(userId);
         return user != null ? userRepository.getTransactionsByUser(user) : new ArrayList<>();
@@ -60,15 +61,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         Map<Integer,User> map = userRepository.getAllUsers();
-
         if(map.isEmpty()) return null;
 
-        List<User> allUsers = new ArrayList<>();
-        for (Map.Entry<Integer, User> entry : map.entrySet()) {
-            User user = entry.getValue();
-            allUsers.add(user);
-        }
-        return allUsers;
-
+        return (List<User>) map.values();
     }
 }
