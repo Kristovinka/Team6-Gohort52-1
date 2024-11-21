@@ -12,7 +12,7 @@ import java.util.Map;
 public interface TransactionService {
 
     // Метод для создания транзакци
-    void addTransaction(Transaction transaction);
+    void addTransaction(String codeCurrency, double amount, int accountId);
 
     void withdrawMoney(Account account, double amount);
 
@@ -26,4 +26,11 @@ public interface TransactionService {
     // Метод для получения транзакции по ID
     List<Transaction> getTransactionsById(int id);
 
+    public Map<String, Double> getExchange_Rates();
+
+    public void updateExchangeRate(String currencyCode,double newRate);
+
+    public void addExchangeRate(String currencyCode,String currency, double newRate);
+
+    public void removeExchangeRate(String currencyCode);
 }

@@ -4,6 +4,7 @@ import model.Account;
 import model.Role;
 import model.Transaction;
 import model.User;
+import repository.CurrencyRepository;
 import repository.TransactionRepository;
 
 import java.util.Currency;
@@ -13,17 +14,21 @@ import java.util.Map;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final CurrencyRepository currencyRepository;
     private User user;
 
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CurrencyRepository currencyRepository) {
         this.transactionRepository = transactionRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(String codeCurrency, double amount, int accountId) {
                     // Сохранение транзакции
-        transactionRepository.addTransaction(transaction);
+        System.out.println( "new transaction: " + transactionRepository.
+                addTransaction(currencyRepository.
+                        getCurrencyByCode(codeCurrency),amount,accountId));
     }
 
     @Override
@@ -58,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Map<Integer, List<Transaction>> getAllTransactions() {
-        // Находим  все транзакции
+        // Находим все транзакции
         return transactionRepository.getTransactionsHistory();
     }
 
@@ -66,6 +71,28 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> getTransactionsById(int id) {
         // Получение транзакций по ID
         return transactionRepository.getTransactionsById(id);
+    }
+
+    @Override
+    public Map<String, Double> getExchange_Rates() {
+        return transactionRepository.getExchange_Rates();
+    }
+
+    @Override
+    public void updateExchangeRate(String currencyCode, double newRate) {
+        transactionRepository.updateExchangeRate(currencyCode,newRate);
+    }
+
+    @Override
+    public void addExchangeRate(String currencyCode,String currency, double newRate) {
+        currencyRepository.addCurrency(currencyCode, currency);
+        transactionRepository.updateExchangeRate(currencyCode, newRate);
+    }
+
+    @Override
+    public void removeExchangeRate(String currencyCode) {
+        transactionRepository.removeExchangeRate(currencyCode);
+        currencyRepository.deleteCurrency(currencyRepository.getCurrencyByCode(currencyCode));
     }
 
 }
