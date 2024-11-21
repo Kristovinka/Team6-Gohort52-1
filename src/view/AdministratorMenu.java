@@ -1,17 +1,20 @@
 package view;
 
 import model.User;
+import service.CurrencyService;
+import service.TransactionService;
+import service.UserService;
 
 import java.util.Scanner;
 import java.util.List;
 
 public class AdministratorMenu {
     private CurrencyService currencyService;
-    private OperationService operationService;
+    private TransactionService operationService;
     private UserService userService;
     private Scanner scanner;
 
-    public AdministratorMenu(CurrencyService currencyService, OperationService operationService, UserService userService) {
+    public AdministratorMenu(CurrencyService currencyService, TransactionService operationService, UserService userService) {
         this.currencyService = currencyService;
         this.operationService = operationService;
         this.userService = userService;
@@ -62,14 +65,14 @@ public class AdministratorMenu {
     private void changeExchangeRate() {
         System.out.print("Введите код исходной валюты: ");
         String fromCurrency = scanner.nextLine();
-        System.out.print("Введите код целевой валюты: ");
-        String toCurrency = scanner.nextLine();
+//        System.out.print("Введите код целевой валюты: ");
+//        String toCurrency = scanner.nextLine();
         System.out.print("Введите новый курс: ");
         double rate = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
         try {
-            currencyService.updateExchangeRate(fromCurrency, toCurrency, rate);
+            operationService.updateExchangeRate(fromCurrency, rate);
             System.out.println("Курс валюты успешно изменен.");
         } catch (CustomException e) {
             System.err.println("Ошибка изменения курса: " + e.getMessage());
@@ -81,9 +84,12 @@ public class AdministratorMenu {
         String code = scanner.nextLine();
         System.out.print("Введите название новой валюты: ");
         String name = scanner.nextLine();
+        //todo
+        System.out.print("Введите kurs новой валюты: ");
+        double kurs = scanner.nextDouble();
 
-        Currency currency = new Currency(code, name);
-        currencyService.addCurrency(currency);
+        //Currency currency = new Currency(code, name);
+        operationService.addExchangeRate(code, name, kurs);
         System.out.println("Новая валюта успешно добавлена.");
     }
 
@@ -92,7 +98,7 @@ public class AdministratorMenu {
         String code = scanner.nextLine();
 
         try {
-            currencyService.removeCurrency(code);
+            operationService.removeExchangeRate(code);
             System.out.println("Валюта успешно удалена.");
         } catch (CustomException e) {
             System.err.println("Ошибка удаления валюты: " + e.getMessage());
