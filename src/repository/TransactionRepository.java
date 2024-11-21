@@ -15,8 +15,14 @@ public interface TransactionRepository {
 
     public List<Transaction> getTransactionsById(int transactionId);
 
-    public Transaction addTransaction(Currency currency, double exchange_Rate, double amount, int accountId);
+    public Transaction addTransaction(Currency currency, double amount, int accountId);
 
     Map<Integer,List<Transaction>> getTransactionsHistory();
+
+    public Map<String, Double> getExchange_Rates();
+
+    public void updateExchangeRate(String currencyCode, double newRate);
+
+    public void removeExchangeRate(String currencyCode);
 
 }

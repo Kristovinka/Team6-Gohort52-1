@@ -47,6 +47,18 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
     public AtomicInteger getTransactionId() {
         return transactionId;
     }

@@ -4,6 +4,7 @@ import model.Account;
 import model.Role;
 import model.Transaction;
 import model.User;
+import repository.CurrencyRepository;
 import repository.TransactionRepository;
 
 import java.util.Currency;
@@ -13,17 +14,19 @@ import java.util.Map;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final CurrencyRepository currencyRepository;
     private User user;
 
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CurrencyRepository currencyRepository) {
         this.transactionRepository = transactionRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(String codeCurrency, double amount, int accountId) {
                     // Сохранение транзакции
-        transactionRepository.addTransaction(transaction);
+        transactionRepository.addTransaction(currencyRepository.getCurrencyByCode(codeCurrency),amount,accountId);
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Map;
 public interface TransactionService {
 
     // Метод для создания транзакци
-    void addTransaction(Transaction transaction);
+    void addTransaction(String codeCurrency, double amount, int accountId);
 
     void withdrawMoney(Account account, double amount);
 
