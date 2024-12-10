@@ -14,7 +14,8 @@ public class AccountRepoImpl implements AccountRepository {
     public AccountRepoImpl() {
         this.accounts = new LinkedHashMap<>();
         Currency currency = new Currency("USD", "Доллар США");
-        addAccount(currency);
+        //todo
+        //addAccount(currency);
     }
 
     private void addAccount(Currency currency) {

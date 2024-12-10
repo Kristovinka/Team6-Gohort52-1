@@ -1,5 +1,6 @@
 package repository;
 
+import model.Account;
 import model.Role;
 import model.Transaction;
 import model.User;
@@ -64,6 +65,17 @@ public class UserRepositoryImpl implements UserRepository{
             return null;
         }
         return users.get(userID);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        for (Map.Entry<Integer, User> entry : users.entrySet()) {
+            if (entry.getValue().getEmail().equals(email)) {
+                    return entry.getValue();
+                }
+            }
+
+        return null;
     }
 
 

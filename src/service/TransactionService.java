@@ -14,11 +14,11 @@ public interface TransactionService {
     // Метод для создания транзакци
     void addTransaction(String codeCurrency, double amount, int accountId);
 
-    void withdrawMoney(Account account, double amount);
+    void withdrawMoney(int accountId, double amount);
 
-    void putMoney(Account account, double amount); // положить деньги
+    void putMoney(int accountId, double amount); // положить деньги
 
-    void exchangeMoney(Account account, double amount, Currency origin, Currency result); // поменять деньги
+    void exchangeMoney(int accountId,int toAccountId, double amount); // поменять деньги
 
     // Метод для получения всех транзакции
     Map<Integer, List<Transaction>> getAllTransactions();

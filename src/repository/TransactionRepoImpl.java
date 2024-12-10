@@ -11,7 +11,7 @@ public class TransactionRepoImpl implements TransactionRepository{
     private final Map<Integer, List<Transaction>> transactions; // account id
     private final Map<String, Double> exchange_Rates; // CURRENCY id,
 
-    public TransactionRepoImpl(Map<Integer, List<Transaction>> transactions, Map<String, Double> rates) {
+    public TransactionRepoImpl() {
         this.exchange_Rates = new LinkedHashMap<>();
         this.transactions = new LinkedHashMap<>();
         addExchange_Rates();
@@ -101,7 +101,7 @@ public class TransactionRepoImpl implements TransactionRepository{
             exchange_Rates.remove(currencyCode);
 
             // Важно! Вызываем метод для обновления транзакций.
-            updateTransactionsWithExchangeRates();
+           // updateTransactionsWithExchangeRates();
         } else {
             System.err.println("Ошибка: Курс обмена для валюты " + currencyCode + " не найден или exchange_Rates равно null.");
         }

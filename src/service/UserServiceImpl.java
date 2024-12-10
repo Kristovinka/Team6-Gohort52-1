@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(String email, String password, Role role) throws EmailValidateException, RegistrationValidateException, PasswordValidateException {
+    public User registerUser(String email, String password) throws EmailValidateException, PasswordValidateException, RegistrationValidateException{
                  // Проверяем валидность email и пароля
         UserValidator.isEmailValid(email);
         UserValidator.isPasswordValid(password);
@@ -36,7 +36,21 @@ public class UserServiceImpl implements UserService {
         }
 
         // Создаем нового пользователя
-        return userRepository.addUser(email, password, role);
+        return userRepository.addUser(email, password, Role.USER);
+    }
+
+    @Override
+    public void loginUser(String email, String password) throws EmailValidateException, PasswordValidateException {
+        User user = userRepository.getUserByEmail(email);
+
+        if (user == null) {
+            throw new EmailValidateException("Неверный адрес электронной почты!");
+        }
+
+        if (!user.getPassword().equals(password)) {
+            throw new PasswordValidateException("Неверный пароль!");
+        }
+
     }
 
     @Override
@@ -64,5 +78,19 @@ public class UserServiceImpl implements UserService {
         if(map.isEmpty()) return null;
 
         return (List<User>) map.values();
+    }
+
+    @Override
+    public User getUserById(int userID) {
+        if ( userRepository.getUserById(userID) == null) System.out.println("Пользователь с таким id ne существует");
+        return userRepository.getUserById(userID);
+    }
+
+    @Override
+    public User getUserByEmail(String email) throws EmailValidateException {
+        if (userRepository.getUserByEmail(email) == null) {
+            throw new EmailValidateException("Пользователь с таким email ne существует.");
+        }
+        return userRepository.getUserByEmail(email);
     }
 }

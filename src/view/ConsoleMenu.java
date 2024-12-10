@@ -1,24 +1,30 @@
 package view;
 
 import model.User;
+import service.AccountService;
 import service.CurrencyService;
+import service.TransactionService;
 import service.UserService;
+import utils.EmailValidateException;
+import utils.PasswordValidateException;
+import utils.RegistrationValidateException;
 import utils.RoleValidateException;
 
 import java.util.Scanner;
 
 class ConsoleMenu {
-    private UserService userService;
-    private AccountService accountService;
-    private CurrencyService currencyService;
-    private OperationService operationService;
-    private Scanner scanner;
+    private final UserService userService;
+    private final AccountService accountService;
+    private final CurrencyService currencyService;
+    private final TransactionService transactionService;
+    private final Scanner scanner;
 
-    public ConsoleMenu(UserService userService, AccountService accountService, CurrencyService currencyService, OperationService operationService) {
+    public ConsoleMenu(UserService userService, AccountService accountService,
+                       CurrencyService currencyService, TransactionService transactionService) {
         this.userService = userService;
         this.accountService = accountService;
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = transactionService;
         this.scanner = new Scanner(System.in);
     }
 
@@ -52,24 +58,22 @@ class ConsoleMenu {
     }
 
     private void registerUser() {
-        System.out.print("Введите имя: ");
-        String name = scanner.nextLine();
         System.out.print("Введите email: ");
         String email = scanner.nextLine();
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
 
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole("user"); // По умолчанию новый пользователь - обычный пользователь
-
         try {
-            userService.registerUser(user);
-            System.out.println("Регистрация успешна!");
-        } catch (CustomException e) {
-            System.err.println("Ошибка регистрации: " + e.getMessage());
+            System.out.println("Регистрация успешна!" );
+            System.out.println("Новый пользователь: " + userService.registerUser(email, password));
+        } catch (RegistrationValidateException e) {
+            System.out.println(e.getMessage());
+
+        } catch (EmailValidateException e) {
+            System.out.println(e.getMessage());
+
+        } catch (PasswordValidateException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -80,12 +84,15 @@ class ConsoleMenu {
         String password = scanner.nextLine();
 
         try {
-            User user = userService.login(email, password);
+            userService.loginUser(email, password);
             System.out.println("Вход успешен!");
-            UserMenu userMenu = new UserMenu(accountService, currencyService, operationService);
-            userMenu.showMenu(user);
-        } catch (CustomException e) {
+
+            UserMenu userMenu = new UserMenu( userService, accountService, currencyService, transactionService);
+            userMenu.showMenu(userService.getUserByEmail(email));
+        } catch (EmailValidateException e) {
             System.err.println("Ошибка входа: " + e.getMessage());
+        } catch (PasswordValidateException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -95,17 +102,21 @@ class ConsoleMenu {
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
 
-        try {
-            User admin = userService.login(email, password);
-            if (userService.isAdmin(admin)) {
-                System.out.println("Вход успешен!");
-                AdministratorMenu adminMenu = new AdministratorMenu(currencyService, operationService, userService);
-                adminMenu.showMenu(admin);
-            } else {
-                System.err.println("Вы не имеете прав администратора.");
-            }
-        } catch (RoleValidateException e) {
-            System.err.println("Ошибка входа: " + e.getMessage());
-        }
+//        try {
+//            userService.loginAdmin(email, password);
+//            if (userService.isAdmin(admin)) {
+//                System.out.println("Вход успешен!");
+//                AdministratorMenu adminMenu = new AdministratorMenu(currencyService, transactionService, userService);
+//                adminMenu.showMenu(admin);
+//            } else {
+//                System.err.println("Вы не имеете прав администратора.");
+//            }
+//        } catch (EmailValidateException e) {
+//            System.err.println("Ошибка входа: " + e.getMessage());
+//        } catch (PasswordValidateException e) {
+//            System.out.println(e.getMessage());
+//        } catch (RoleValidateException e) {
+//            System.err.println("Ошибка входа: " + e.getMessage());
+//        }
     }
 }

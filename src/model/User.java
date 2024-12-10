@@ -8,7 +8,6 @@ import java.util.Map;
 public class User {
     private String email;
     private String password;
-    //Map<Integer, User> usersMap;//= new Map<Integer, User>();
     List<Transaction> userTransactions;
     //currency repository - map<String, Currency>, map<String, Rate>
     private Role role;

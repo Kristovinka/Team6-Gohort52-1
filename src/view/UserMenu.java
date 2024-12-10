@@ -2,19 +2,26 @@ package view;
 
 import model.Account;
 import model.User;
+import service.AccountService;
+import service.CurrencyService;
+import service.TransactionService;
+import service.UserService;
 
 import java.util.Scanner;
 
 public class UserMenu {
-    private AccountService accountService;
-    private CurrencyService currencyService;
-    private OperationService operationService;
-    private Scanner scanner;
+    private final UserService userService;
+    private final AccountService accountService;
+    private final CurrencyService currencyService;
+    private final TransactionService transactionService;
+    private final Scanner scanner;
 
-    public UserMenu(AccountService accountService, CurrencyService currencyService, OperationService operationService) {
+    public UserMenu(UserService userService, AccountService accountService,
+                    CurrencyService currencyService, TransactionService transactionService) {
+        this.userService = userService;
         this.accountService = accountService;
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = transactionService;
         this.scanner = new Scanner(System.in);
     }
 
@@ -64,84 +71,96 @@ public class UserMenu {
     }
 
     private void viewBalance(User user) {
-        System.out.println("Список аккаунтов пользователя " + user.getName() + ":");
-        for (Account account : user.getAccounts().values()) {
-            System.out.println("ID: " + account.getId() + ", Валюта: " + account.getCurrency() + ", Баланс: " + account.getBalance());
-        }
+        System.out.println("Список аккаунтов пользователя " + user.getEmail() + ":");
+        accountService.getAccountsByUser_id(user.getUserId());
+//        for (Account account : user.getAccounts().values()) {
+//            System.out.println("ID: " + account.getId() + ", Валюта: " + account.getCurrency() + ", Баланс: " + account.getBalance());
+//        }
     }
 
     private void depositAccount(User user) {
+        System.out.println( accountService.getAccountsByUser_id(user.getUserId()));
         System.out.print("Введите ID аккаунта: ");
-        String accountId = scanner.nextLine();
+        int accountId = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Введите сумму для пополнения: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        try {
-            accountService.deposit(accountId, amount);
+//        try {
+            transactionService.putMoney(accountId, amount);
             System.out.println("Аккаунт успешно пополнен.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка пополнения: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка пополнения: " + e.getMessage());
+//        }
     }
 
     private void withdrawAccount(User user) {
+        System.out.println( accountService.getAccountsByUser_id(user.getUserId()));
         System.out.print("Введите ID аккаунта: ");
-        String accountId = scanner.nextLine();
+        int accountId = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Введите сумму для снятия: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        try {
-            accountService.withdraw(accountId, amount);
+//        try {
+            transactionService.withdrawMoney(accountId, amount);
             System.out.println("Средства успешно сняты.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка снятия: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка снятия: " + e.getMessage());
+//        }
     }
 
     private void openAccount(User user) {
         System.out.print("Введите валюту для нового счета: ");
         String currency = scanner.nextLine();
 
-        accountService.openAccount(user.getId(), currency);
+        accountService.addAccount(currency, user.getUserId());
         System.out.println("Новый счет успешно открыт.");
     }
 
     private void closeAccount(User user) {
+        System.out.println( accountService.getAccountsByUser_id(user.getUserId()));
         System.out.print("Введите ID аккаунта для закрытия: ");
-        String accountId = scanner.nextLine();
+        int accountId = scanner.nextInt();
+        scanner.nextLine();
 
-        try {
-            accountService.closeAccount(accountId);
+//        try {
+            accountService.deleteAccount(accountId);
             System.out.println("Счет успешно закрыт.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка закрытия счета: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка закрытия счета: " + e.getMessage());
+//        }
     }
 
     private void viewOperations(User user) {
-        System.out.println("История операций пользователя " + user.getName() + ":");
-        for (Operation operation : operationService.getOperationsByUser(user.getId())) {
-            System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
-        }
+        System.out.println("История операций пользователя ");
+        System.out.println(user.getUserTransactions());
+//        System.out.println("История операций пользователя " + user.getName() + ":");
+//        for (Operation operation : operationService.getOperationsByUser(user.getId())) {
+//            System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
+//        }
     }
 
     private void exchangeCurrency(User user) {
+        System.out.println( accountService.getAccountsByUser_id(user.getUserId()));
         System.out.print("Введите ID исходного аккаунта: ");
-        String fromAccountId = scanner.nextLine();
+        int fromAccountId = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Введите ID целевого аккаунта: ");
-        String toAccountId = scanner.nextLine();
+        int toAccountId = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Введите сумму для обмена: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        try {
-            currencyService.exchange(fromAccountId, toAccountId, amount);
+//        try {
+            transactionService.exchangeMoney(fromAccountId, toAccountId, amount);
             System.out.println("Обмен успешно выполнен.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка обмена валют: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка обмена валют: " + e.getMessage());
+//        }
     }
 }
 

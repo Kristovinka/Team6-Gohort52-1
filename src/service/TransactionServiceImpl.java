@@ -4,6 +4,7 @@ import model.Account;
 import model.Role;
 import model.Transaction;
 import model.User;
+import repository.AccountRepository;
 import repository.CurrencyRepository;
 import repository.TransactionRepository;
 
@@ -15,12 +16,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CurrencyRepository currencyRepository;
+    private final AccountRepository accountRepository;
     private User user;
 
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, CurrencyRepository currencyRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CurrencyRepository currencyRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
         this.currencyRepository = currencyRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -32,7 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void withdrawMoney(Account account, double amount) {
+    public void withdrawMoney(int accountId, double amount) {
+        Account account = accountRepository.getAccountById(accountId);
         if(account==null) {
             System.out.println("Account doesn't exist!");
         } else if (user==null || user.getRole() ==Role.BLOCKED) {
@@ -46,7 +50,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void putMoney(Account account, double amount) {
+    public void putMoney(int accountId, double amount) {
+        Account account = accountRepository.getAccountById(accountId);
         if(account==null) {
             System.out.println("Account doesn't exist!");
         } else if (user==null || user.getRole() ==Role.BLOCKED) {
@@ -57,7 +62,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void exchangeMoney(Account account, double amount, Currency origin, Currency result) {
+    public void exchangeMoney(int accountId, int toAccountId, double amount) {
+        Account account = accountRepository.getAccountById(accountId);
+
         //map<code, double>
     }
 
@@ -94,5 +101,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.removeExchangeRate(currencyCode);
         currencyRepository.deleteCurrency(currencyRepository.getCurrencyByCode(currencyCode));
     }
+
+    //public List<Transaction> getTransactionsbyExchange_Rate(int id) {}
 
 }

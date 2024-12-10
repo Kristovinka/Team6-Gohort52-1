@@ -1,5 +1,6 @@
 package view;
 
+import model.Transaction;
 import model.User;
 import service.CurrencyService;
 import service.TransactionService;
@@ -10,13 +11,13 @@ import java.util.List;
 
 public class AdministratorMenu {
     private CurrencyService currencyService;
-    private TransactionService operationService;
+    private TransactionService transactionService;
     private UserService userService;
     private Scanner scanner;
 
     public AdministratorMenu(CurrencyService currencyService, TransactionService operationService, UserService userService) {
         this.currencyService = currencyService;
-        this.operationService = operationService;
+        this.transactionService = operationService;
         this.userService = userService;
         this.scanner = new Scanner(System.in);
     }
@@ -71,12 +72,12 @@ public class AdministratorMenu {
         double rate = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        try {
-            operationService.updateExchangeRate(fromCurrency, rate);
+//        try {
+            transactionService.updateExchangeRate(fromCurrency, rate);
             System.out.println("Курс валюты успешно изменен.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка изменения курса: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка изменения курса: " + e.getMessage());
+//        }
     }
 
     private void addCurrency() {
@@ -84,12 +85,11 @@ public class AdministratorMenu {
         String code = scanner.nextLine();
         System.out.print("Введите название новой валюты: ");
         String name = scanner.nextLine();
-        //todo
-        System.out.print("Введите kurs новой валюты: ");
-        double kurs = scanner.nextDouble();
+        System.out.print("Введите курс новой валюты: ");
+        double exchangeRate = scanner.nextDouble();
+        scanner.nextLine();
 
-        //Currency currency = new Currency(code, name);
-        operationService.addExchangeRate(code, name, kurs);
+        transactionService.addExchangeRate(code, name, exchangeRate);
         System.out.println("Новая валюта успешно добавлена.");
     }
 
@@ -97,38 +97,41 @@ public class AdministratorMenu {
         System.out.print("Введите код валюты для удаления: ");
         String code = scanner.nextLine();
 
-        try {
-            operationService.removeExchangeRate(code);
+//        try {
+            transactionService.removeExchangeRate(code);
             System.out.println("Валюта успешно удалена.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка удаления валюты: " + e.getMessage());
-        }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка удаления валюты: " + e.getMessage());
+//        }
     }
 
     private void viewUserOperations() {
+        userService.getAllUsers();
         System.out.print("Введите ID пользователя: ");
-        String userId = scanner.nextLine();
+        int userId = scanner.nextInt();
 
-        try {
+//        try {
             User user = userService.getUserById(userId);
-            System.out.println("История операций пользователя " + user.getName() + ":");
-            for (Operation operation : operationService.getOperationsByUser(userId)) {
-                System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
-            }
-        } catch (CustomException e) {
-            System.err.println("Ошибка просмотра операций пользователя: " + e.getMessage());
-        }
+        System.out.println("История операций пользователя \n" + user.getUserTransactions());
+
+//            System.out.println("История операций пользователя " + user.getName() + ":");
+//            for (Operation operation : transactionService.getOperationsByUser(userId)) {
+//                System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
+//            }
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка просмотра операций пользователя: " + e.getMessage());
+//        }
     }
 
     private void viewCurrencyOperations() {
         System.out.print("Введите код валюты: ");
         String currencyCode = scanner.nextLine();
-
-        List<Operation> operations = currencyService.getOperationsByCurrency(currencyCode);
+//todo
+        //List<Transaction> operations = currencyService.getOperationsByCurrency(currencyCode);
         System.out.println("История операций по валюте " + currencyCode + ":");
-        for (Operation operation : operations) {
-            System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
-        }
+//        for (Transaction operation : operations) {
+//            System.out.println("ID: " + operation.getId() + ", Тип: " + operation.getType() + ", Сумма: " + operation.getAmount() + ", Дата: " + operation.getDate());
+//        }
     }
 
     private void assignAdminRole() {
@@ -137,12 +140,12 @@ public class AdministratorMenu {
         System.out.print("Введите новую роль (admin/moderator/cashier): ");
         String newRole = scanner.nextLine();
 
-        try {
-            userService.changeUserRole(userId, newRole);
-            System.out.println("Роль пользователя успешно изменена.");
-        } catch (CustomException e) {
-            System.err.println("Ошибка изменения роли: " + e.getMessage());
-        }
+//        try {
+//            userService.changeUserRole(userId, newRole);
+//            System.out.println("Роль пользователя успешно изменена.");
+//        } catch (CustomException e) {
+//            System.err.println("Ошибка изменения роли: " + e.getMessage());
+//        }
     }
 }
 
